@@ -7,7 +7,7 @@
     body {
       margin: 0;
       padding: 0;
-      background-image: url('background.png'); /* Replace with your background image */
+      background-image: url('background.png');
       background-size: cover;
       background-position: center;
       height: 100vh;
@@ -44,30 +44,90 @@
       background-color: #008ecc;
       transform: scale(1.05);
     }
+
+    .disabled {
+      background-color: gray !important;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
+    #countdown {
+      margin-top: 15px;
+      font-size: 20px;
+      color: #ffcc00;
+    }
   </style>
 </head>
 <body>
   <div class="box">
     <h2>Requirement:</h2>
     <p>A screenshot of your MLBB profile</p>
-    <a href="https://forms.gle/SJ8gT236bx854oFA8" target="_self">JOIN</a>
-	<p>FIRST BATCH</p>
-	<p>1 PLAYER WILL GET THE 300 DIAS ON JUNE 7 2025 (first batch done early)</P>
-	<P>SECOND BATCH</P>
-	<p>1 PLAYER WILL GET THE 300 DIAS ON JUNE 13 2025</P>
-	<p>NOTE: We may send the dias earlier than expected.</p>
-	<p>CONGRATS TO</p>
-	<p>MILKꨄ︎ <a href="Proof-20031_-060525T.png" target=_self>view proof</a></p>
-	<p>Second winner will be announced on June 13 2025.</p>
-	<p>this event are still visible until june 20 2025</p>
-	<h2>Q&A</h2>
-	<h3>If i didn't won on the first batch do i need to fill up again to join?</h3>
-	<p>No. you still have a chance in the second batch on june 13 2025.</p>
-	<h3>Is this safe?</h3>
-	<p>Yes. We do not ask about your address and contact number for PRIVACY. We only ask necessary questions.. </p>
-	<p>We do not expose any of the collected data for your security and privacy.</p>
-	<h3>NOTE📝</h3>
-	<p>INVALID ENTRY WILL BE DISQUALIFIED</h3>
+    <a id="joinBtn" class="link-button" href="https://forms.gle/SJ8gT236bx854oFA8" target="_self">JOIN</a>
+    <div id="countdown">Loading time...</div>
+
+    <p>FIRST BATCH</p>
+    <p>1 PLAYER WILL GET THE 300 DIAS ON JUNE 7 2025 (first batch done early)</p>
+    <p>SECOND BATCH</p>
+    <p>1 PLAYER WILL GET THE 300 DIAS ON JUNE 13 2025</p>
+    <p>NOTE: We may send the dias earlier than expected.</p>
+    <p>CONGRATS TO</p>
+    <p>MILKꨄ︎ <a href="Proof-20031_-060525T.png" target=_self>view proof</a></p>
+    <p>Second winner will be announced on June 13 2025.</p>
+    <p>This event is still visible until June 20 2025</p>
+    <h2>Q&A</h2>
+    <h3>If I didn't win on the first batch, do I need to fill up again?</h3>
+    <p>No. You still have a chance in the second batch on June 13, 2025.</p>
+    <h3>Is this safe?</h3>
+    <p>Yes. We do not ask about your address and contact number for PRIVACY. We only ask necessary questions.</p>
+    <p>We do not expose any of the collected data for your security and privacy.</p>
+    <h3>NOTE📝</h3>
+    <p>INVALID ENTRY WILL BE DISQUALIFIED</p>
   </div>
+
+  <script>
+    const joinBtn = document.getElementById("joinBtn");
+    const countdownEl = document.getElementById("countdown");
+
+    // Set deadline (June 12, 2025 00:00:05)
+    const deadline = new Date("2025-06-12T00:00:05+08:00"); // +08:00 for Asia/Manila
+
+    // Get accurate time from worldtimeapi.org
+    fetch("https://worldtimeapi.org/api/timezone/Asia/Manila")
+      .then(response => response.json())
+      .then(data => {
+        let currentTime = new Date(data.datetime);
+
+        function updateCountdown() {
+          const now = new Date(currentTime);
+          const diff = deadline - now;
+
+          if (diff <= 0) {
+            joinBtn.classList.add("disabled");
+            joinBtn.removeAttribute("href");
+            countdownEl.textContent = "⛔ Deadline is passed.";
+            alert("Deadline is passed.");
+            clearInterval(timer);
+            return;
+          }
+
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / (1000 * 60)) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+
+          countdownEl.textContent = `⏳ Time left: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+          // Simulate ticking
+          currentTime = new Date(currentTime.getTime() + 1000);
+        }
+
+        updateCountdown();
+        const timer = setInterval(updateCountdown, 1000);
+      })
+      .catch(err => {
+        countdownEl.textContent = "⚠️ Could not fetch server time. Check your internet.";
+        console.error(err);
+      });
+  </script>
 </body>
 </html>
