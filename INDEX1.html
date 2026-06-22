@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanong Lang</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 500px;
+            overflow: visible;
+        }
+        
+        h1 {
+            color: #ff4d4d;
+            margin: 0 0 25px 0;
+            font-size: 1.8em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            line-height: 1.4;
+            position: relative;
+            z-index: 2;
+        }
+        
+        #response {
+            font-size: 2.5em;
+            color: #ff4d4d;
+            margin: 20px 0;
+            display: none;
+            font-family: 'Brush Script MT', cursive;
+            animation: heartbeat 1.5s infinite;
+            position: relative;
+            z-index: 2;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        #buttonContainer {
+            position: relative;
+            min-height: 150px;
+            width: 100%;
+            margin: 40px 0;
+            z-index: 1;
+        }
+        
+        #yesButton {
+            padding: 15px 35px;
+            font-size: 1.2em;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 3;
+            width: 80%;
+            max-width: 200px;
+        }
+        
+        #yesButton:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+        
+        #yesButton:active {
+            transform: translateY(1px);
+        }
+        
+        #noButton {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            position: fixed;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 4;
+            white-space: nowrap;
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 77, 77, 0.7);
+            animation: float 10s ease-in infinite;
+            opacity: 0;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+            
+            #response {
+                font-size: 2em;
+            }
+            
+            #buttonContainer {
+                min-height: 120px;
+                margin: 30px 0;
+            }
+            
+            #yesButton {
+                padding: 12px 25px;
+                font-size: 1.1em;
+                width: 70%;
+            }
+            
+            #noButton {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .container {
+                transform: scale(0.9);
+            }
+        }
+
+        @media (max-height: 400px) {
+            .container {
+                transform: scale(0.8);
+            }
+        }
+
+        /* Audio controls (hidden) */
+        #audioPlayer {
+            display: none;
+        }
+
+        /* Volume control */
+        .volume-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 15px;
+            border-radius: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .volume-control label {
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .volume-control input {
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1>Pwede ba na akin ka lang? 💕</h1>
+        
+        <div id="buttonContainer">
+            <button id="yesButton">Yes 😊</button>
+            <button id="noButton">No 😢</button>
+        </div>
+        
+        <div id="response">I love you! 💝</div>
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="audioPlayer" loop>
+        <source src="happy.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Volume Control -->
+    <div class="volume-control">
+        <label for="volumeControl">🔊</label>
+        <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="0.5">
+    </div>
+
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const response = document.getElementById('response');
+        const heartsContainer = document.getElementById('hearts');
+        const buttonContainer = document.getElementById('buttonContainer');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const volumeControl = document.getElementById('volumeControl');
+        
+        // Variables for tracking mouse/touch position
+        let isMoving = false;
+        let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Set initial volume
+        audioPlayer.volume = volumeControl.value;
+        
+        // Update volume when slider changes
+        volumeControl.addEventListener('input', function() {
+            audioPlayer.volume = this.value;
+        });
+        
+        // Create floating hearts
+        function createHearts() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            
+            heartsContainer.appendChild(heart);
+            
+            // Remove heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+        
+        // Create hearts every 300ms
+        setInterval(createHearts, 300);
+        
+        // Function to move the "No" button to a random position anywhere on screen
+        function moveNoButton() {
+            if (isMoving) return;
+            
+            isMoving = true;
+            
+            const buttonWidth = noButton.offsetWidth;
+            const buttonHeight = noButton.offsetHeight;
+            
+            // Get viewport dimensions
+            const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            const viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+            
+            // Calculate maximum positions (allowing button to go partially off-screen)
+            const maxX = viewportWidth - buttonWidth * 0.8;
+            const maxY = viewportHeight - buttonHeight * 0.8;
+            
+            // Generate random position with some padding from edges
+            const minPadding = 20;
+            const randomX = Math.max(minPadding, Math.random() * maxX - minPadding);
+            const randomY = Math.max(minPadding, Math.random() * maxY - minPadding);
+            
+            // Set new position
+            noButton.style.left = randomX + 'px';
+            noButton.style.top = randomY + 'px';
+            noButton.style.position = 'fixed';
+            
+            // Add a small delay before allowing the button to move again
+            setTimeout(() => {
+                isMoving = false;
+            }, isTouchDevice ? 500 : 300);
+        }
+        
+        // Handle mouse movement for desktop
+        if (!isTouchDevice) {
+            document.addEventListener('mousemove', (e) => {
+                const buttonRect = noButton.getBoundingClientRect();
+                const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+                const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+                
+                const distance = Math.sqrt(
+                    Math.pow(e.clientX - buttonCenterX, 2) + 
+                    Math.pow(e.clientY - buttonCenterY, 2)
+                );
+                
+                // If mouse is within 100px of the button, move it
+                if (distance < 100) {
+                    moveNoButton();
+                }
+            });
+        }
+        
+        // Handle touch movement for mobile
+        if (isTouchDevice) {
+            noButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                moveNoButton();
+            });
+            
+            // Also move if the user tries to scroll near the button
+            document.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                const buttonRect = noButton.getBoundingClientRect();
+                
+                const distance = Math.sqrt(
+                    Math.pow(touch.clientX - (buttonRect.left + buttonRect.width/2), 2) + 
+                    Math.pow(touch.clientY - (buttonRect.top + buttonRect.height/2), 2)
+                );
+                
+                if (distance < 150) {
+                    moveNoButton();
+                }
+            }, { passive: true });
+        }
+        
+        // Also move the button if clicked (in case user is quick)
+        noButton.addEventListener('click', function(e) {
+            if (isTouchDevice) {
+                e.preventDefault();
+            }
+            moveNoButton();
+        });
+        
+        // Show the response when "Yes" is clicked
+        yesButton.addEventListener('click', function() {
+            // Play the audio
+            audioPlayer.play().catch(e => {
+                console.log("Autoplay was prevented. Please interact with the page first.");
+            });
+            
+            // Show the response
+            response.style.display = 'block';
+            yesButton.style.display = 'none';
+            noButton.style.display = 'none';
+            document.querySelector('h1').textContent = 'mwahh! Salamat! 💖';
+            
+            // Remove event listeners
+            if (!isTouchDevice) {
+                document.removeEventListener('mousemove', moveNoButton);
+            } else {
+                document.removeEventListener('touchmove', moveNoButton);
+            }
+            
+            // Create more hearts when yes is clicked
+            for(let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createHearts();
+                }, i * 100);
+            }
+        });
+        
+        // Initial random position for the "No" button
+        moveNoButton();
+        
+        // Handle window resize
+        window.addEventListener('resize', moveNoButton);
+
+        // For autoplay policy: allow audio after user interaction
+        document.addEventListener('click', function enableAudio() {
+            // This is just to satisfy autoplay policies
+            if (audioPlayer.paused) {
+                audioPlayer.play().then(() => {
+                    audioPlayer.pause();
+                    audioPlayer.currentTime = 0;
+                }).catch(e => {});
+            }
+            document.removeEventListener('click', enableAudio);
+        }, { once: true });
+    </script>
+</body>
+</html>

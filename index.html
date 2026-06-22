@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 RIZZ Soundboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #c779d0;
+            --accent: #ff8e9e;
+            --dark: #2a0a3d;
+            --darker: #1a0526;
+            --light: #f8f9fa;
+            --shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
+            background: linear-gradient(-45deg, #8a2be2, #c71585, #ff69b4, #9370db);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            perspective: 1000px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: float 10s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(calc(-100vw + 200px)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Glowing Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.4;
+            animation: floatOrb 20s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: #8a2be2;
+            top: 20%;
+            left: 10%;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #ff69b4;
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: #c71585;
+            top: 50%;
+            right: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translateY(0) translateX(0) scale(1); }
+            50% { transform: translateY(-50px) translateX(50px) scale(1.1); }
+            100% { transform: translateY(50px) translateX(-50px) scale(1); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transform: translateX(-100%) rotate(45deg);
+            transition: 0.8s;
+            z-index: -1;
+        }
+
+        .container:hover::before {
+            transform: translateX(100%) rotate(45deg);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6bff, #ff8e9e, #ff6bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientText 5s ease infinite;
+            background-size: 300% 300%;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-buttons .rizz-btn {
+            padding: 0.8rem 1.8rem;
+            font-size: 0.9rem;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-buttons .rizz-btn::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ff0000);
+            background-size: 400% 400%;
+            border-radius: 25px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .top-buttons .rizz-btn.playing::before {
+            opacity: 1;
+            animation: rgbAnimation 3s linear infinite;
+        }
+
+        @keyframes rgbAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+
+        .top-buttons .rizz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-buttons .rizz-btn.playing {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3) !important;
+            color: white !important;
+        }
+
+        .main-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .control-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn.active {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .rizz-btn {
+            padding: 1.8rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 1;
+        }
+
+        .rizz-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
+            opacity: 0;
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .rizz-btn:hover::before {
+            opacity: 1;
+        }
+
+        .rizz-btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .rizz-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .rizz-btn i {
+            font-size: 1.6rem;
+            transition: all 0.3s ease;
+        }
+
+        .rizz-btn:hover i {
+            transform: scale(1.2);
+            color: #ff8e9e;
+        }
+
+        .boom-btn {
+            grid-column: span 3;
+            font-size: 1.8rem !important;
+            padding: 2rem !important;
+            animation: pulse 2s infinite;
+            background: rgba(199, 21, 133, 0.2) !important;
+            border: 1px solid rgba(199, 21, 133, 0.3) !important;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(199, 21, 133, 0.4); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(199, 21, 133, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(199, 21, 133, 0); }
+        }
+
+        .volume-control {
+            margin-top: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .volume-control label {
+            font-size: 1.4rem;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #volume {
+            width: 200px;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            cursor: pointer;
+        }
+
+        #volume::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(199, 21, 133, 0.5);
+        }
+
+        #volume::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #ff8e9e;
+        }
+
+        .now-playing {
+            margin-top: 1.8rem;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            min-height: 24px;
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .main-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .boom-btn {
+                grid-column: span 2;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .boom-btn {
+                grid-column: span 1;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Active playing state for main buttons */
+        .rizz-btn.playing {
+            background: rgba(255, 0, 0, 0.3) !important;
+            border-color: #ff0000 !important;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Glowing Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <h1>🔥 RIZZ Soundboard</h1>
+        
+        <!-- Top Row - Small RIZZ Buttons -->
+        <div class="top-buttons">
+            <button class="rizz-btn" onclick="playSound('RIZZZZ_1.mp3', this, true)">
+                <i class="fas fa-play"></i> RIZZ 1
+            </button>
+            <button class="rizz-btn" onclick="playSound('RIZZZZ_2.mp3', this, true)">
+                <i class="fas fa-play"></i> RIZZ 2
+            </button>
+            <button class="rizz-btn" onclick="playSound('RIZZZZ_3.mp3', this, true)">
+                <i class="fas fa-play"></i> RIZZ 3
+            </button>
+            <button class="rizz-btn" onclick="playSound('RIZZZZ_4.mp3', this, true)">
+                <i class="fas fa-play"></i> RIZZ 4
+            </button>
+        </div>
+
+        <!-- Main Buttons -->
+        <div class="main-buttons">
+            <button class="rizz-btn" onclick="playSound('happy_baby_1.mp3', this)">
+                <i class="fas fa-baby"></i> Happy Baby
+            </button>
+            <button class="rizz-btn" onclick="playSound('happy_baby_2.mp3', this)">
+                <i class="fas fa-baby-carriage"></i> Happy Baby 2
+            </button>
+            <button class="rizz-btn" onclick="playSound('crying_baby.mp3', this)">
+                <i class="fas fa-sad-tear"></i> Crying Baby
+            </button>
+            <button class="rizz-btn boom-btn" onclick="playSound('boom.mp3', this)">
+                <i class="fas fa-bomb"></i> BOOM!
+            </button>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="control-buttons">
+            <button class="control-btn" id="repeatBtn" onclick="toggleRepeat()">
+                <i class="fas fa-redo"></i> Repeat
+            </button>
+            <button class="control-btn" onclick="stopAll()">
+                <i class="fas fa-stop"></i> Stop All
+            </button>
+        </div>
+
+        <div class="volume-control">
+            <label for="volume"><i class="fas fa-volume-up"></i></label>
+            <input type="range" id="volume" min="0" max="1" step="0.1" value="0.7">
+        </div>
+
+        <div class="now-playing" id="nowPlaying"></div>
+        
+        <div class="footer">
+            Press 1-4 for RIZZ sounds, 5-8 for other sounds
+        </div>
+    </div>
+
+    <audio id="audioPlayer" class="audio-player"></audio>
+
+    <script>
+        // Global variables
+        let currentAudio = null;
+        let currentButton = null;
+        let isRepeatActive = false;
+        let repeatSound = null;
+        let repeatButton = null;
+
+        // DOM Elements
+        const audioPlayer = document.getElementById('audioPlayer');
+        const nowPlaying = document.getElementById('nowPlaying');
+        const volumeControl = document.getElementById('volume');
+        const repeatBtn = document.getElementById('repeatBtn');
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const size = Math.random() * 3 + 1;
+                const duration = Math.random() * 10 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Toggle repeat function
+        function toggleRepeat() {
+            isRepeatActive = !isRepeatActive;
+            repeatBtn.classList.toggle('active', isRepeatActive);
+            
+            if (isRepeatActive && currentAudio) {
+                repeatSound = currentAudio.src;
+                repeatButton = currentButton;
+            } else {
+                repeatSound = null;
+                repeatButton = null;
+            }
+        }
+
+        // Stop all sounds function
+        function stopAll() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                if (currentButton) {
+                    currentButton.classList.remove('playing');
+                }
+                currentAudio = null;
+                currentButton = null;
+                
+                // Also stop the repeat if it's active
+                isRepeatActive = false;
+                repeatBtn.classList.remove('active');
+                repeatSound = null;
+                repeatButton = null;
+                
+                // Update now playing text
+                nowPlaying.style.opacity = 0;
+                setTimeout(() => {
+                    nowPlaying.textContent = '';
+                }, 500);
+            }
+        }
+
+        // Play sound function
+        function playSound(soundFile, button, isRizzButton = false) {
+            // Reset previous button if any
+            if (currentButton) {
+                currentButton.classList.remove('playing');
+            }
+            
+            // Set new current button
+            currentButton = button;
+            currentButton.classList.add('playing');
+            
+            // Add special class for RIZZ buttons
+            if (isRizzButton) {
+                currentButton.classList.add('rizz-playing');
+            }
+            
+            // Stop currently playing audio if any
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+
+            // Create new audio element
+            const audio = new Audio(`rizz/${soundFile}`);
+            audio.volume = volumeControl.value;
+            currentAudio = audio;
+            
+            // If repeat is active, store the current sound
+            if (isRepeatActive) {
+                repeatSound = audio.src;
+                repeatButton = button;
+            }
+            
+            // Update now playing text
+            let displayName = soundFile.replace('.mp3', '')
+                                      .replace(/_/g, ' ')
+                                      .replace(/\b\w/g, c => c.toUpperCase());
+            
+            // Special cases for display names
+            const soundNames = {
+                'happy_baby_1.mp3': "Happy Baby",
+                'happy_baby_2.mp3': "Happy Baby 2",
+                'crying_baby.mp3': "Crying Baby",
+                'boom.mp3': "BOOM!"
+            };
+            
+            displayName = soundNames[soundFile] || displayName;
+            
+            nowPlaying.innerHTML = `<i class="fas fa-music"></i> Now Playing: ${displayName}`;
+            nowPlaying.style.opacity = 1;
+
+            // Add visual effect for boom button
+            if (soundFile === 'boom.mp3') {
+                document.body.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 500);
+            }
+
+            // Play the audio
+            audio.play().catch(error => {
+                console.error("Error playing audio:", error);
+                alert("Error playing audio. Make sure the file path is correct and the file exists.");
+                if (currentButton) {
+                    currentButton.classList.remove('playing', 'rizz-playing');
+                }
+            });
+
+            // Handle audio end
+            audio.onended = () => {
+                if (isRepeatActive && repeatSound === audio.src) {
+                    // If repeat is active and it's the same sound, play it again
+                    audio.currentTime = 0;
+                    audio.play();
+                } else {
+                    // Otherwise, reset the button and now playing text
+                    if (currentButton) {
+                        currentButton.classList.remove('playing', 'rizz-playing');
+                    }
+                    
+                    setTimeout(() => {
+                        nowPlaying.style.opacity = 0;
+                        setTimeout(() => {
+                            nowPlaying.textContent = '';
+                        }, 500);
+                    }, 2000);
+                    
+                    currentAudio = null;
+                    currentButton = null;
+                }
+            };
+        }
+
+        // Add shake animation for boom effect
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0% { transform: translate(1px, 1px) rotate(0deg); }
+                10% { transform: translate(-1px, -2px) rotate(-1deg); }
+                20% { transform: translate(-3px, 0px) rotate(1deg); }
+                30% { transform: translate(3px, 2px) rotate(0deg); }
+                40% { transform: translate(1px, -1px) rotate(1deg); }
+                50% { transform: translate(-1px, 2px) rotate(-1deg); }
+                60% { transform: translate(-3px, 1px) rotate(0deg); }
+                70% { transform: translate(3px, 1px) rotate(-1deg); }
+                80% { transform: translate(-1px, -1px) rotate(1deg); }
+                90% { transform: translate(1px, 2px) rotate(0deg); }
+                100% { transform: translate(1px, -2px) rotate(-1deg); }
+            }
+            
+            @keyframes rgbAnimation {
+                0% { background-position: 0% 50%; }
+                100% { background-position: 400% 50%; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Volume control
+        volumeControl.addEventListener('input', (e) => {
+            if (currentAudio) {
+                currentAudio.volume = e.target.value;
+            }
+        });
+
+        // Keyboard controls
+        document.addEventListener('keydown', (event) => {
+            if (event.key >= '1' && event.key <= '8') {
+                const index = parseInt(event.key) - 1;
+                const buttons = document.querySelectorAll('.rizz-btn');
+                if (buttons[index]) {
+                    // Get the sound file for this button
+                    let soundFile;
+                    let isRizzButton = false;
+                    
+                    if (index < 4) {
+                        soundFile = `RIZZZZ_${index + 1}.mp3`;
+                        isRizzButton = true;
+                    } else if (index === 4) {
+                        soundFile = 'happy_baby_1.mp3';
+                    } else if (index === 5) {
+                        soundFile = 'happy_baby_2.mp3';
+                    } else if (index === 6) {
+                        soundFile = 'crying_baby.mp3';
+                    } else if (index === 7) {
+                        soundFile = 'boom.mp3';
+                    }
+                    playSound(soundFile, buttons[index], isRizzButton);
+                }
+            } else if (event.key === 'r' || event.key === 'R') {
+                // Toggle repeat with 'R' key
+                toggleRepeat();
+            } else if (event.key === 's' || event.key === 'S') {
+                // Stop all with 'S' key
+                stopAll();
+            }
+        });
+
+        // Initialize particles
+        createParticles();
+    </script>
+</body>
+</html>
